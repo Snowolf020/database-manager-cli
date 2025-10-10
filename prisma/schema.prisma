@@ -1,0 +1,34 @@
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+datasource redis {
+  provider = "redis"
+  url      = env("REDIS_URL")
+}
+
+model Database {
+  id       String   @id @default(cuid())
+  name     String
+  type     String
+  host     String
+  port     Int
+  username String
+  password String
+  database String
+}
+
+model Table {
+  id        String   @id @default(cuid())
+  name      String
+  database  Database @relation(fields: [databaseId], references: [id])
+  databaseId String
+}
+
+model RedisHash {
+  id       String   @id @default(cuid())
+  key      String
+  value    String
+  expires  Int
+}
