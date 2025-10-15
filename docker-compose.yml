@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=database-manager-cli
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+  sqlite:
+    image: busybox
+    volumes:
+      - sqlite-data:/app/db
+    command: sleep 365d
+    restart: always
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: always
+  app:
+    build: .
+    environment:
+      - DB_TYPE=postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=database-manager-cli
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - sqlite
+      - redis
+    volumes:
+      - .:/app
+    command: go run main.go
+
+volumes:
+  postgres-data:
+  sqlite-data:
+  redis-data:
