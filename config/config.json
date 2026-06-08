@@ -1,0 +1,1 @@
+{"database": {"postgres": {"host": "localhost", "port": 5432, "username": "postgres", "password": "password", "database": "database"}, "sqlite": {"database": "database.db"}}, "prisma": {"schema": "prisma/schema.prisma"}, "docker": {"compose": "docker-compose.yml"}, "redis": {"host": "localhost", "port": 6379}, "application": {"name": "database-manager-cli", "version": "1.0.0"}}
